@@ -15,7 +15,10 @@ class FallbackDirectoryResolverPlugin {
     apply(resolver) {
         resolver.plugin("module", (request, callback) => {
             if (request.request.match(this.pathRegex)) {
-                const req = request.request.replace(this.pathRegex, "");
+                let req = request.request.replace(this.pathRegex, "");
+                if (this.options.structureRoot) {
+                    req = path.relative(this.options.structureRoot, path.resolve(request.path, req));
+                }
                 this.resolveComponentPath(req).then((resolvedComponentPath) => {
                     const obj = {
                         directory: request.directory,

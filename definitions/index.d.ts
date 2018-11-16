@@ -1,6 +1,7 @@
 export interface IFallbackDirectoryResolverPluginOptions {
     directories?: string[];
     prefix?: string;
+    structureRoot?: string;
 }
 export declare class FallbackDirectoryResolverPlugin {
     static defaultOptions: IFallbackDirectoryResolverPluginOptions;
