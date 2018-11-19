@@ -11,7 +11,6 @@ const existsAsync: (path: string) => Promise<boolean> = (path: string) => new Pr
 export interface IFallbackDirectoryResolverPluginOptions {
     directories?: string[];
     prefix?: string;
-    structureRoot?: string;
 }
 
 export class FallbackDirectoryResolverPlugin {
@@ -36,9 +35,12 @@ export class FallbackDirectoryResolverPlugin {
             if (request.request.match(this.pathRegex)) {
                 let req = request.request.replace(this.pathRegex, "");
 
-                if (this.options.structureRoot) {
-                    req = path.relative(this.options.structureRoot, path.resolve(request.path, req));
-                }
+                req = path.resolve(request.path, req);
+
+                // @ts-ignore
+                req = this.options.directories
+                    .map((dir) => req.replace(dir, ""))
+                    .reduce((min, val) => min.length >= val.length ? val : min, "");
 
                 this.resolveComponentPath(req).then(
                     (resolvedComponentPath: string) => {
