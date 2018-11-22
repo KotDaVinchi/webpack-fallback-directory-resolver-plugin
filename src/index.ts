@@ -39,7 +39,7 @@ export class FallbackDirectoryResolverPlugin {
 
                 // @ts-ignore
                 req = this.options.directories
-                    .map((dir) => req.replace(dir, ""))
+                    .map((dir) => path.relative(req, dir))
                     .reduce((min, val) => (min.length && (val.length >= min.length)) ? min : val, "");
 
                 this.resolveComponentPath(req).then(
