@@ -5,7 +5,7 @@ const path = require("path");
 const existsAsync: (path: string) => Promise<boolean> = (path: string) => new Promise(
     (resolve: (result: boolean) => void) => {
         fs.exists(path, resolve);
-    }
+    },
 );
 
 export interface IFallbackDirectoryResolverPluginOptions {
@@ -25,7 +25,7 @@ export class FallbackDirectoryResolverPlugin {
     private cache: { [key: string]: Promise<string> };
 
     public constructor(options: IFallbackDirectoryResolverPluginOptions = {}) {
-        this.options = Object.assign(FallbackDirectoryResolverPlugin.defaultOptions, options);
+        this.options = Object.assign({}, FallbackDirectoryResolverPlugin.defaultOptions, options);
         this.pathRegex = new RegExp(`^#${this.options.prefix}#/`);
         this.cache = {};
     }
